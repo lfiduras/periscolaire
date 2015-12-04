@@ -1,0 +1,15 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Modifier une activité{% endblock %}
+
+{% block content %}
+
+{% for flashMessage in app.session.flashbag.get('notice') %}
+
+    {{ flashMessage }}
+
+{% endfor %}
+
+{{ form(form) }}
+
+{% endblock %}

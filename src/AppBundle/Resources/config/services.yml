@@ -1,0 +1,3 @@
+services:
+    codemodif:
+        class: AppBundle\Services\CodeGenerator

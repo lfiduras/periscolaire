@@ -1,0 +1,34 @@
+parametrage:
+    jour:
+        1: lundi
+        2: mardi
+        3: mercredi
+        4: jeudi
+        5: vendredi
+        6: samedi
+        7: dimanche
+    enregistrer: Enregistrer
+
+activite:
+    nbplaces: "%count% place|]1,+Inf]%count% places"
+    libelle:  Nom
+    nbplacesdispo: Nombre de places disponibles
+    jour: Jour de l'activité
+    enregistre: Activité enregistrée
+    supprime: Activité supprimée
+    introuvable: Activité introuvable
+    choisissez: Choisissez une activité
+    
+eleve:
+    nom: Nom
+    prenom: Prénom
+    dateNaissance: Date de naissance
+    email: Adresse e-mail de contact    
+    transportScolaire: Prends les transports scolaire?
+    enregistre: Elève enregistré
+    erreur:
+      email: Adresse e-mail incorrecte
+
+niveau:
+    titre: Niveau
+    choisissez: Choisissez un niveau

@@ -1,0 +1,61 @@
+{# src/AppBundle/Resources/views/layout.html.twig #}
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Inscription Periscolaire{% endblock %}</title>
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    {% javascripts '@AppBundle/Resources/Public/bootstrap/js/*' %}
+    	<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+       	
+    {% stylesheets 'bundles/app/bootstrap/css/*' filter='cssrewrite' %}
+    	<link rel="stylesheet" href="{{ asset_url }}" />
+	{% endstylesheets %}
+<script type="text/javascript">
+	$(document).on('ready', onDocumentReady);
+
+	function onDocumentReady(){
+		$('input.date').datepicker({
+			dateFormat:'dd/mm/yy',
+			minDate: "-20Y", 
+			maxDate: "-5Y"
+		});
+	}
+</script>
+<style type="text/css">
+.row{
+	font-size: 0.8em;
+}
+.row:hover{
+	background-color: #efefef;
+}
+.row .niveau{
+	font-weight: bold;
+	font-size: 1.2em;
+	background-color: #cecece;
+}
+</style>
+  </head>
+  <body>
+	<div class="messages">
+	{% for flashMessage in app.session.flashbag.get('success') %}
+		<div class="alert alert-success">
+	    {{ flashMessage|trans }}
+		</div>
+	{% endfor %}
+	{% for flashMessage in app.session.flashbag.get('error') %}
+		<div class="alert alert-danger">
+	    {{ flashMessage|trans }}
+		</div>
+	{% endfor %}
+	</div>
+	<div class="container">
+    {% block content %}
+    {% endblock %}
+	</div>
+  </body>
+</html>

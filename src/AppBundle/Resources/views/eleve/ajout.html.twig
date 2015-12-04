@@ -1,0 +1,99 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Liste des activités{% endblock %}
+
+{% block content %}
+{% macro templateChoix(formData) %}	
+	{{ form_widget(formData, {'attr':{'class':'choix'} }) }}
+{% endmacro %}
+
+<div class="well">
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    {# Les erreurs générales du formulaire. #}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.nom) }}
+    {{ form_row(form.prenom) }}
+    {{ form_row(form.dateNaissance) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.transportScolaire) }}
+    {{ form_label(form.niveau) }}
+    {{ form_widget(form.niveau,  {'attr': {'class': 'choix-control'}}) }}
+   
+    {{ form_widget(form.choix, {'attr': {'class': 'choix'}}) }}
+       
+    <div class="liste_choix" data-prototype="{{ _self.templateChoix(form.choix.vars.prototype)|e }}">
+    {% for un_choix in form.choix.children %}    
+    	{{ form_widget(un_choix.activite, {'attr': {'class': 'choix'}}) }}
+    {% endfor %}
+    </div>
+    
+    
+
+  {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+  {# Génération automatique des champs pas encore écrits.
+     Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+     et tous les champs cachés (type « hidden »). #}
+  {{ form_rest(form) }}
+  
+  {# Fermeture de la balise <form> du formulaire HTML #}
+  {{ form_end(form) }}
+</div>
+
+
+
+
+<div class="hidden">
+{% for niveau in listeDesNiveaux %}
+	<select class="template-niveau-{{ niveau.id }}">
+	<option value="">{{ 'activite.choisissez' | trans }}</option>
+	{% for activite in niveau.activites %}		
+		<option value="{{ activite.id }}">{{ activite.libelle }} ({{ ('parametrage.jour.' ~ activite.jour)|trans }})</option>	
+	{% endfor %}
+	</select>
+{% endfor %}
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+		
+	nouveauChoix(3);
+	$('#app_bundle_eleve_choix').hide();
+	$('#app_bundle_eleve_niveau').on('change', onControlChoixChange)
+	
+});
+
+var numChoix = 0;
+function nouveauChoix(nbChoix)
+{
+	while (nbChoix > numChoix){
+		numChoix += 1;
+		var formulaireChoix = $('#app_bundle_eleve_choix').attr('data-prototype').replace(/__name__label__/g, 'Choix n°' + numChoix  ).replace(/__name__/g, numChoix);
+		$('#app_bundle_eleve_choix').append(formulaireChoix);
+		$('#app_bundle_eleve_choix select.form-control').addClass('choix');
+		nouveauChoix(nbChoix - 1);
+	} 
+}
+
+
+function onControlChoixChange(){
+	$('#app_bundle_eleve_choix').hide();
+	var niveau_courant = $(this).val();
+	if(niveau_courant == ""){		
+		return;	
+	}
+	else{	
+		var options = $('.template-niveau-' + niveau_courant + ' option').clone();
+		
+		$('select.choix option').remove();	
+		
+		$('select.choix').append(options);
+		$('#app_bundle_eleve_choix').show();
+	}	
+}
+</script>
+{% endblock %}
